@@ -1,0 +1,40 @@
+Node 1 :
+Account 1 : "0xbd6fa2afe2ddcd851f112976b4f5b7b301b0e55b"
+Account 2 : "0x3909ac9bb8d42f0fe4c6f08d2da45fb736b386e2" Passphrase: password2
+Coinbase : "0xbd6fa2afe2ddcd851f112976b4f5b7b301b0e55b"
+Enode : "enode://2b6b8984b883ea6dd2fe629d481327bf722f52f730291781beaf7696f87267f0bb216d724eec3dff617657b2a67d0b184afb35b4ecebc555ced397246bc26b15@127.0.0.1:30303?discport=0"
+
+>>.....................................................................................................................................................................................<<
+
+Node 2 :
+Account1 : "0xb6ccbcf097650231ba6ea89f1ca5950b6c42b26c" 
+Coinbase : "0xb6ccbcf097650231ba6ea89f1ca5950b6c42b26c"
+Enode : "enode://385de120009d8db30430d58bf5c21f83f1b1227d227d7168e300192058014f071daf95503995b49c1d7857500f7064bda422c01ba1c5250d5eaa8b501dfc4808@127.0.0.1:2?discport=0"
+
+>>.....................................................................................................................................................................................<<
+
+เปิด geth console Node 1 :
+geth    --networkid 100    --identity node1    --verbosity 3    --nodiscover    --nat none  --datadir node1      --rpc    --rpcapi "web3, eth, personal"     --rpccorsdomain "*" --ipcpath node1/geth.ipc    console
+
+เปิด geth console Node 2 :
+geth    --networkid 100    --identity node2    --verbosity 3   --nodiscover    --nat none   --datadir node2     --rpc      --rpcapi "web3, eth, personal"        --rpccorsdomain "*"    --rpcport 2222 --port 2 --ipcpath node2/geth.ipc    console
+
+คำสั่ง ให้โหนดที่ 2 เชื่อมต่อเข้ากับโหนดที่ 1 : (ใช้ Enode ของ 1)
+admin.addPeer("enode://2b6b8984b883ea6dd2fe629d481327bf722f52f730291781beaf7696f87267f0bb216d724eec3dff617657b2a67d0b184afb35b4ecebc555ced397246bc26b15@127.0.0.1:30303?discport=0")
+
+คำสั่ง ปลดล็อก Node :
+personal.unlockAccount(eth.accounts[0])
+
+คำสั่ง ตรวจสอบเงินในบัญชี :
+eth.getBalance(eth.accounts[0])
+
+คำสั่ง Transaction การโอนเงิน :
+personal.unlockAccount(eth.accounts[0]) ( ต้อง Unlock ก่อน ) Passphrase: password2
+eth.sendTransaction({from:eth.accounts[0],to:"0xbd6fa2afe2ddcd851f112976b4f5b7b301b0e55b",value:web3.toWei(10,"ether")})
+
+คำสั่ง :
+miner.start(2)
+miner.stop()
+
+>>.....................................................................................................................................................................................<<
+
